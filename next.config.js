@@ -1,11 +1,14 @@
 import plugin from 'next-intl/plugin';
+
 const withNextIntl = plugin('./i18n.ts');
 
 /** @type {import('next').NextConfig} */
-const nextConfig: import('next').NextConfig = {
+const nextConfig = {
   reactStrictMode: true,
   // Génération statique
-  output: 'export',
+  output: 'export' ? undefined : 'standalone',
 }
 
-module.exports = withNextIntl(nextConfig);
+export default withNextIntl(nextConfig);
+
+
