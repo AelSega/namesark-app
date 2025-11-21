@@ -1,7 +1,6 @@
 // app/[locale]/prenoms/[slug]/page.tsx
 import { getNameBySlug, getNameStatistics, getAllNameSlugs } from '@/lib/db';
 import { notFound } from 'next/navigation';
-import { useTranslations } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
 // Génère toutes les pages statiquement
