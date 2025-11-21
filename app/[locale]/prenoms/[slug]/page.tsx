@@ -1,19 +1,15 @@
 // app/[locale]/prenoms/[slug]/page.tsx
-import { getNameBySlug, getNameStatistics } from '@/lib/db';
+import { getNameBySlug, getNameStatistics, getAllNameSlugs } from '@/lib/db';
 import { notFound } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
-// 🔥 CORRECTION : Utiliser des slugs statiques au lieu d'appeler la DB
+// Génère toutes les pages statiquement
 export async function generateStaticParams() {
-  // Slugs statiques pour les prénoms les plus courants
-  const staticSlugs = [
-    'marie', 'jean', 'pierre', 'anne', 'paul',
-    'julie', 'thomas', 'camille', 'luc', 'sophie',
-    'nicolas', 'isabelle', 'david', 'catherine', 'francois'
-  ];
+  const slugs = await getAllNameSlugs();
   const locales = ['fr', 'en'];
   
-  return staticSlugs.flatMap(slug => 
+  return slugs.flatMap(slug => 
     locales.map(locale => ({
       locale,
       slug
@@ -70,7 +66,7 @@ export default async function NamePage({
           <h2 className="text-2xl font-semibold mb-3">Statistiques</h2>
           <div className="bg-gray-50 p-4 rounded">
             <p>Données disponibles de {statistics[0].year} à {statistics[statistics.length - 1].year}</p>
-            <p>Total d attributions: {statistics.reduce((sum, s) => sum + s.count, 0).toLocaleString()}</p>
+            <p>Total d'attributions: {statistics.reduce((sum, s) => sum + s.count, 0).toLocaleString()}</p>
           </div>
         </section>
       )}
