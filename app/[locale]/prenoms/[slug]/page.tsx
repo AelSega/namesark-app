@@ -1,15 +1,19 @@
 // app/[locale]/prenoms/[slug]/page.tsx
-import { getNameBySlug, getNameStatistics, getAllNameSlugs } from '@/lib/db';
+import { getNameBySlug, getNameStatistics } from '@/lib/db';
 import { notFound } from 'next/navigation';
-import { useTranslations } from 'next-intl';
 import { setRequestLocale } from 'next-intl/server';
 
-// Génère toutes les pages statiquement
+// 🔥 CORRECTION : Utiliser des slugs statiques au lieu d'appeler la DB
 export async function generateStaticParams() {
-  const slugs = await getAllNameSlugs();
+  // Slugs statiques pour les prénoms les plus courants
+  const staticSlugs = [
+    'marie', 'jean', 'pierre', 'anne', 'paul',
+    'julie', 'thomas', 'camille', 'luc', 'sophie',
+    'nicolas', 'isabelle', 'david', 'catherine', 'francois'
+  ];
   const locales = ['fr', 'en'];
   
-  return slugs.flatMap(slug => 
+  return staticSlugs.flatMap(slug => 
     locales.map(locale => ({
       locale,
       slug
