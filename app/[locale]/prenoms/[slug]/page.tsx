@@ -1,12 +1,16 @@
 // app/[locale]/prenoms/[slug]/page.tsx
-import { getNameBySlug, getNameStatistics, getAllNameSlugs } from '@/lib/db';
+import { getNameBySlug, getNameStatistics } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
-
 // Génère toutes les pages statiquement
 export async function generateStaticParams() {
-  const slugs = await getAllNameSlugs();
+  // 🔥 REMPLACER CETTE LIGNE :
+  const slugs = [
+    'marie', 'jean', 'pierre', 'anne', 'paul',
+    'julie', 'thomas', 'camille', 'luc', 'sophie'
+  ];
+  
   const locales = ['fr', 'en'];
   
   return slugs.flatMap(slug => 
@@ -16,6 +20,8 @@ export async function generateStaticParams() {
     }))
   );
 }
+
+// Le reste du fichier reste identique...
 
 // Métadonnées SEO
 export async function generateMetadata({ params }: { params: { slug: string, locale: string } }) {
