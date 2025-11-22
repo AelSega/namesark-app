@@ -2,6 +2,7 @@
 import { sql } from '@vercel/postgres';
 import Link from 'next/link';
 
+
 export default async function PrenomsIndex({ params }: { params: { locale: string } }) {
   const { rows } = await sql`
     SELECT slug, name_display, popularity_score 

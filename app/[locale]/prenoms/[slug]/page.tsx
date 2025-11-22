@@ -3,9 +3,28 @@ import { getNameBySlug, getNameStatistics, getAllNameSlugs } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 
+
+// // Génère toutes les pages statiquement
+// export async function generateStaticParams() {
+//   const slugs = await getAllNameSlugs();
+//   const locales = ['fr', 'en'];
+  
+//   return slugs.flatMap(slug => 
+//     locales.map(locale => ({
+//       locale,
+//       slug
+//     }))
+//   );
+// }
+
 // Génère toutes les pages statiquement
 export async function generateStaticParams() {
-  const slugs = await getAllNameSlugs();
+  // Remplace l'appel DB par des slugs statiques
+  const slugs = [
+    'marie', 'jean', 'pierre', 'anne', 'paul',
+    'julie', 'thomas', 'camille', 'luc', 'sophie'
+  ];
+  
   const locales = ['fr', 'en'];
   
   return slugs.flatMap(slug => 
@@ -15,6 +34,10 @@ export async function generateStaticParams() {
     }))
   );
 }
+
+
+
+
 
 // Métadonnées SEO
 export async function generateMetadata({ params }: { params: { slug: string, locale: string } }) {
