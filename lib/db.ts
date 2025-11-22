@@ -1,10 +1,5 @@
 // lib/db.ts
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { sql } from '@vercel/postgres';
 
 export interface Name {
   id: number;
@@ -26,34 +21,30 @@ export interface NameStatistic {
 }
 
 export async function getNameBySlug(slug: string): Promise<Name | null> {
-  const { data } = await supabase
-    .from('names')
-    .select('*')
-    .eq('slug', slug)
-    .single();
-  return data;
+  const { rows } = await sql<Name>`
+    SELECT * FROM names WHERE slug = ${slug}
+  `;
+  return rows[0] || null;
 }
 
 export async function getNameStatistics(nameId: number): Promise<NameStatistic[]> {
-  const { data } = await supabase
-    .from('name_statistics')
-    .select('year, count, rank, countries!inner(code)')
-    .eq('name_id', nameId)
-    .order('year');
-  
-  return data?.map(s => ({
-    year: s.year,
-    count: s.count,
-    rank: s.rank,
-    country_code: s.countries.code
-  })) || [];
+  const { rows } = await sql<NameStatistic>`
+    SELECT 
+      ns.year, 
+      ns.count, 
+      ns.rank,
+      c.code as country_code
+    FROM name_statistics ns
+    JOIN countries c ON ns.country_id = c.id
+    WHERE ns.name_id = ${nameId}
+    ORDER BY ns.year ASC
+  `;
+  return rows;
 }
 
 export async function getAllNameSlugs(): Promise<string[]> {
-  const { data } = await supabase
-    .from('names')
-    .select('slug')
-    .limit(100);
-  
-  return data?.map(r => r.slug) || [];
+  const { rows } = await sql<{ slug: string }>`
+    SELECT slug FROM names
+  `;
+  return rows.map(r => r.slug);
 }

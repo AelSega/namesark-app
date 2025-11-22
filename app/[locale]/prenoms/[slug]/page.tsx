@@ -65,7 +65,7 @@ export default async function NamePage({
           <h2 className="text-2xl font-semibold mb-3">Statistiques</h2>
           <div className="bg-gray-50 p-4 rounded">
             <p>Données disponibles de {statistics[0].year} à {statistics[statistics.length - 1].year}</p>
-            <p>Total d'attributions: {statistics.reduce((sum, s) => sum + s.count, 0).toLocaleString()}</p>
+            <p>Total d attributions: {statistics.reduce((sum, s) => sum + s.count, 0).toLocaleString()}</p>
           </div>
         </section>
       )}
