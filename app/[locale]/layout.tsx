@@ -1,14 +1,18 @@
 // app/[locale]/layout.tsx
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages} from 'next-intl/server';
- 
+import {ReactNode} from 'react';
+
+interface Props {
+  children: ReactNode;
+  params: Promise<{locale: string}>;
+}
+
 export default async function LocaleLayout({
   children,
-  params: {locale}
-}: {
-  children: React.ReactNode;
-  params: {locale: string};
-}) {
+  params
+}: Props) {
+  const {locale} = await params;
   const messages = await getMessages();
  
   return (
