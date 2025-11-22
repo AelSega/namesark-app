@@ -3,5 +3,15 @@
     "etymology": "Étymologie",
     "statistics": "Statistiques",
     "popularity": "Popularité"
+  },
+  
+
+  "PrenomsPage": {
+    "title": "Liste des prénoms",
+    "seeAll": "Voir tous les prénoms"
+  },
+  "NamePage": {
+    "title": "Prénom : {name}",
+    "description": "Page pour le prénom {name}"
   }
 }
